@@ -1,5 +1,6 @@
 using System.Text.Json.Serialization;
 using APICatalago.Context;
+using APICatalago.Extensions;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -27,6 +28,7 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
+    app.ConfigureExceptionHandler();
 }
 
 app.UseHttpsRedirection();
