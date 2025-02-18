@@ -1,11 +1,15 @@
+using System.Text.Json.Serialization;
 using APICatalago.Context;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+//Define que o tratamento da serialização vai ignorar quando ocorrer uma referência ciclica 
+builder.Services.AddControllers().AddJsonOptions(options => options.JsonSerializerOptions.ReferenceHandler = 
+    ReferenceHandler.IgnoreCycles);
 
-builder.Services.AddControllers();
+
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 
