@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("APICatalago")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+362adbdc746229b3d0594b2aa3b0e216705e21ff")]
 [assembly: System.Reflection.AssemblyProductAttribute("APICatalago")]
 [assembly: System.Reflection.AssemblyTitleAttribute("APICatalago")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
