@@ -1,6 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
+using APICatalago.Validations;
 
 namespace APICatalago.Models;
 
@@ -12,6 +13,7 @@ public class Product
     
     [Required]
     [StringLength(80)]
+    [FirstUpperLetter]
     public string? Name { get; set; }
     
     [Required]

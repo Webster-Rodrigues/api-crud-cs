@@ -17,22 +17,19 @@ public class ProductController : Controller
     }
 
     [HttpGet]
-    public ActionResult<IEnumerable<Product>> Get() //IEnumerable tem interface somente leitura; Permite adiar a execução;
-                                                        //Não preciso ter toda coleção na memória
+    public async Task<ActionResult<IEnumerable<Product>>> Get() //IEnumerable tem interface somente leitura; Permite adiar a execução;
+                                                                 //Não preciso ter toda coleção na memória
     {
-        var products = context.Products.ToList();
-         if (products is null)
-        {
-            return NotFound("Produtos não encontrados");
-        }
-         
-        return products;
+        return await context.Products.AsNoTracking().ToListAsync();
+        //await => Indica que desejamos aguardar essa operação. Enquanto isso os recursos utilziados 
+        //para processar essa requisição podem ser usados p/ processar outras requisições
+        
     }
 
     [HttpGet("{id:int}")]
-    public ActionResult<Product> Get(int id)
+    public async Task<ActionResult<Product>> Get(int id)
     {
-        var product = context.Products.Find(id);
+        var product = await context.Products.FindAsync(id);
         if (product is null)
         {
             return NotFound("O Id informado não existe");

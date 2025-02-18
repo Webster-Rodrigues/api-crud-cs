@@ -19,18 +19,23 @@ public class CategoryController : Controller
     [HttpGet("products")]
     public ActionResult<IEnumerable<Category>> GetCategoriesProducts()
     {
-        return context.Categories.Include(p => p.Products).ToList();
+        //return context.Categories.Include(p => p.Products).AsNoTracking().ToList();
         //Include = Método do EntityFramework para incluir, juntamente de categorias, todos os produtos relacionados
+        return context.Categories.Include(c => c.Products)
+            .Where(c=>c.CategoryId <= 5).ToList();
+        //Evita retornar todos os registros
     }
 
     [HttpGet]
     public ActionResult<IEnumerable<Category>> Get()
     {
-        return context.Categories.ToList();
+        return context.Categories.AsNoTracking().ToList();
+        //AsNoTracking => Evita que as entidades sejam rastradas pelo EF. Recomendavel em consultas somente leituras
+        //Assim não precisa rastrear essa consulta
         
     }
     
-    [HttpGet("{id:int}")]
+    [HttpGet("{id:int:min(1)}")] //Restrição no parâmetro
     public ActionResult<Category> Get(int id)
     {
         var category = context.Categories.Find(id);

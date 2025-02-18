@@ -10,7 +10,9 @@
   <component name="ChangeListManager">
     <list default="true" id="8cc436b2-2ae3-4825-940b-7c88a94721e8" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.APICatalago/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.APICatalago/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APICatalago/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APICatalago/Program.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APICatalago/Controllers/CategoryController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APICatalago/Controllers/CategoryController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APICatalago/Controllers/ProductController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APICatalago/Controllers/ProductController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APICatalago/Models/Product.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APICatalago/Models/Product.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/APICatalago/bin/Debug/net9.0/APICatalago.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APICatalago/bin/Debug/net9.0/APICatalago.dll" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/APICatalago/bin/Debug/net9.0/APICatalago.exe" beforeDir="false" afterPath="$PROJECT_DIR$/APICatalago/bin/Debug/net9.0/APICatalago.exe" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/APICatalago/bin/Debug/net9.0/APICatalago.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/APICatalago/bin/Debug/net9.0/APICatalago.pdb" afterDir="false" />
@@ -23,7 +25,6 @@
       <change beforePath="$PROJECT_DIR$/APICatalago/obj/Debug/net9.0/apphost.exe" beforeDir="false" afterPath="$PROJECT_DIR$/APICatalago/obj/Debug/net9.0/apphost.exe" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/APICatalago/obj/Debug/net9.0/ref/APICatalago.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APICatalago/obj/Debug/net9.0/ref/APICatalago.dll" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/APICatalago/obj/Debug/net9.0/refint/APICatalago.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APICatalago/obj/Debug/net9.0/refint/APICatalago.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APICatalago/obj/rider.project.model.nuget.info" beforeDir="false" afterPath="$PROJECT_DIR$/APICatalago/obj/rider.project.model.nuget.info" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -103,7 +104,7 @@
       <option name="presentableId" value="Default" />
       <updated>1739834204850</updated>
       <workItem from="1739834206094" duration="13258000" />
-      <workItem from="1739906039570" duration="2470000" />
+      <workItem from="1739906039570" duration="8268000" />
     </task>
     <servers />
   </component>
