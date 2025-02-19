@@ -1,6 +1,8 @@
 using System.Text.Json.Serialization;
 using APICatalago.Context;
 using APICatalago.Extensions;
+using APICatalago.Filters;
+using APICatalago.Logging;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -21,6 +23,13 @@ string? mySqlConnection = builder.Configuration.GetConnectionString("DefaultConn
 builder.Services.AddDbContext<AppDbContext>(options => options.UseMySql
                     (mySqlConnection,ServerVersion.AutoDetect(mySqlConnection)));
 
+//Registra o filtro
+builder.Services.AddScoped<ApiLoggingFilter>();
+
+builder.Logging.AddProvider(new CustomLoggerProvider(new CustomLoggerProviderConfiguration()
+{
+    LogLevel = LogLevel.Information
+}));
 
 var app = builder.Build();
 

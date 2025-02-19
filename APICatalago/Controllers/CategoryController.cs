@@ -1,4 +1,5 @@
 using APICatalago.Context;
+using APICatalago.Filters;
 using APICatalago.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -10,15 +11,19 @@ namespace APICatalago.Controllers;
 public class CategoryController : Controller
 {
     private readonly AppDbContext context; //Acesso ao banco de dados
+    private readonly ILogger<CategoryController> logger;
 
-    public CategoryController(AppDbContext context)
+    public CategoryController(AppDbContext context, ILogger<CategoryController> logger)
     {
         this.context = context;
+        this.logger = logger;
     }
 
     [HttpGet("products")]
     public ActionResult<IEnumerable<Category>> GetCategoriesProducts()
     {
+        logger.LogInformation("====================GET categories/products ========================");
+        
         //return context.Categories.Include(p => p.Products).AsNoTracking().ToList();
         //Include = Método do EntityFramework para incluir, juntamente de categorias, todos os produtos relacionados
         return context.Categories.Include(c => c.Products)
@@ -27,8 +32,12 @@ public class CategoryController : Controller
     }
 
     [HttpGet]
+    [ServiceFilter(typeof(ApiLoggingFilter))] //Aplicando o filtro
     public ActionResult<IEnumerable<Category>> Get()
     {
+        
+        logger.LogInformation("====================GET categories ======================");
+        
         return context.Categories.AsNoTracking().ToList();
         //AsNoTracking => Evita que as entidades sejam rastradas pelo EF. Recomendavel em consultas somente leituras
         //Assim não precisa rastrear essa consulta
@@ -39,8 +48,13 @@ public class CategoryController : Controller
     public ActionResult<Category> Get(int id)
     {
         var category = context.Categories.Find(id);
+        
+        logger.LogInformation("==================== GET categories/id = {Id} ========================", id);
+
+        
         if (category is null)
         {
+            logger.LogInformation("===================GET categories/id = {id} NOT FOUND =====================", id);
             return NotFound("Category não encontrada");
         }
         return category;
