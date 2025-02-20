@@ -9,8 +9,14 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 //Define que o tratamento da serialização vai ignorar quando ocorrer uma referência ciclica 
-builder.Services.AddControllers().AddJsonOptions(options => options.JsonSerializerOptions.ReferenceHandler = 
-    ReferenceHandler.IgnoreCycles);
+builder.Services.AddControllers(options =>
+    {
+        options.Filters.Add(typeof(ApiExceptionFilter));
+    })
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+    });
 
 
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
@@ -25,6 +31,7 @@ builder.Services.AddDbContext<AppDbContext>(options => options.UseMySql
 
 //Registra o filtro
 builder.Services.AddScoped<ApiLoggingFilter>();
+
 
 builder.Logging.AddProvider(new CustomLoggerProvider(new CustomLoggerProviderConfiguration()
 {

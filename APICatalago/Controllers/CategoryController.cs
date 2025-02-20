@@ -11,7 +11,7 @@ namespace APICatalago.Controllers;
 public class CategoryController : Controller
 {
     private readonly AppDbContext context; //Acesso ao banco de dados
-    private readonly ILogger<CategoryController> logger;
+    private readonly ILogger<CategoryController> logger; //Logger injetado pelo .NET
 
     public CategoryController(AppDbContext context, ILogger<CategoryController> logger)
     {
@@ -20,47 +20,38 @@ public class CategoryController : Controller
     }
 
     [HttpGet("products")]
-    public ActionResult<IEnumerable<Category>> GetCategoriesProducts()
+    public async Task<ActionResult<IEnumerable<Category>>> GetCategoriesProducts()
     {
         logger.LogInformation("====================GET categories/products ========================");
-        
-        //return context.Categories.Include(p => p.Products).AsNoTracking().ToList();
         //Include = Método do EntityFramework para incluir, juntamente de categorias, todos os produtos relacionados
-        return context.Categories.Include(c => c.Products)
-            .Where(c=>c.CategoryId <= 5).ToList();
-        //Evita retornar todos os registros
+        return await context.Categories.Include(c => c.Products)
+            .Where(c=>c.CategoryId <= 5).AsNoTracking().ToListAsync();
     }
 
     [HttpGet]
     [ServiceFilter(typeof(ApiLoggingFilter))] //Aplicando o filtro
-    public ActionResult<IEnumerable<Category>> Get()
+    public async Task<ActionResult<IEnumerable<Category>>> Get()
     {
-        
-        logger.LogInformation("====================GET categories ======================");
-        
-        return context.Categories.AsNoTracking().ToList();
-        //AsNoTracking => Evita que as entidades sejam rastradas pelo EF. Recomendavel em consultas somente leituras
-        //Assim não precisa rastrear essa consulta
+       
+        return await context.Categories.AsNoTracking().ToListAsync();
+        //AsNoTracking => Evita que as entidades sejam rastradas pelo EF. Recomendavel em consultas somente leituras. Assim não precisa rastrear essa consulta
         
     }
     
     [HttpGet("{id:int:min(1)}")] //Restrição no parâmetro
-    public ActionResult<Category> Get(int id)
+    [ServiceFilter(typeof(ApiLoggingFilter))]
+    public async Task<ActionResult<Category>> Get(int id)
     {
-        var category = context.Categories.Find(id);
-        
-        logger.LogInformation("==================== GET categories/id = {Id} ========================", id);
-
-        
+        var category = await context.Categories.FindAsync(id);
         if (category is null)
         {
-            logger.LogInformation("===================GET categories/id = {id} NOT FOUND =====================", id);
-            return NotFound("Category não encontrada");
+             return NotFound("Category não encontrada");
         }
         return category;
     }
 
     [HttpPost]
+    [ServiceFilter(typeof(ApiLoggingFilter))]
     public ActionResult<Category> Post(Category category)
     {
         if (category is null)
@@ -73,6 +64,7 @@ public class CategoryController : Controller
     }
 
     [HttpPut("{id:int}")]
+    [ServiceFilter(typeof(ApiLoggingFilter))]
     public ActionResult<Category> Put(int id, Category category)
     {
         if (id != category.CategoryId)
@@ -86,6 +78,7 @@ public class CategoryController : Controller
     }
 
     [HttpDelete("{id:int}")]
+    [ServiceFilter(typeof(ApiLoggingFilter))]
     public ActionResult<Category> Delete(int id)
     {
         var category = context.Categories.Find(id);

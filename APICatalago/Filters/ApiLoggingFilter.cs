@@ -13,23 +13,29 @@ public class ApiLoggingFilter : IActionFilter
 
     public void OnActionExecuting(ActionExecutingContext context) 
     {
-        //Antes da Action
-        logger.LogInformation("### Executando -> OnActionExecuting");
-        logger.LogInformation("############################################################");
-        logger.LogInformation($"{DateTime.Now.ToLongTimeString()}");
-        logger.LogInformation($"ModelState {context.ModelState.IsValid}");
-        logger.LogInformation("############################################################");
+        var method = context.HttpContext.Request.Method; 
+        var path = context.HttpContext.Request.Path; 
+        var parameters = string.Join(", ", context.ActionArguments.Select(a => $"{a.Key}: {a.Value}"));
+
+        logger.LogInformation("### Iniciando -> {Method} {Path} ({Parameters})", method, path, parameters);
+        logger.LogInformation("➡ ModelState válido: {ModelState}", context.ModelState.IsValid);
     }
 
     public void OnActionExecuted(ActionExecutedContext context) 
     {
-        //Depois da Action
-        logger.LogInformation("### Executando -> OnActionExecuted");
-        logger.LogInformation("############################################################");
-        logger.LogInformation($"{DateTime.Now.ToLongTimeString()}");
-        logger.LogInformation($"Status Code {context.HttpContext.Response.StatusCode}");
-        logger.LogInformation("############################################################");
+        var method = context.HttpContext.Request.Method;
+        var path = context.HttpContext.Request.Path;
+        var statusCode = context.HttpContext.Response.StatusCode;
+
+        if (context.Exception == null) {
+            logger.LogInformation("Concluído -> {Method} {Path} | Status Code: {StatusCode}", 
+                method, path, statusCode);
+        }
+        else {
+            logger.LogError(context.Exception, "Erro na execução -> {Method} {Path}", method, path);
+        }
     }
+
 }
 
 //Classe utilizada para exec ações específicas ANTES e DEPOIS de uma Action
