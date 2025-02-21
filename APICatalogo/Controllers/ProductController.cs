@@ -11,9 +11,9 @@ namespace APICatalogo.Controllers;
 [ApiController]
 public class ProductController : Controller
 {
-    private readonly IRepository<Product> repository;
+    private readonly IUnitOfWork repository;
 
-    public ProductController(IRepository<Product> repository)
+    public ProductController(IUnitOfWork repository)
     {
         this.repository = repository;
     }
@@ -21,14 +21,14 @@ public class ProductController : Controller
     [HttpGet]
     public ActionResult<IEnumerable<Product>> Get() 
     {
-         return Ok(repository.GetAll());
+         return Ok(repository.ProductRepository.GetAll());
 
     }
 
     [HttpGet("{id:int}")]
     public ActionResult<Product> Get(int id)
     {
-        var product = repository.GetById(id);
+        var product = repository.ProductRepository.GetById(id);
         if (product is null)
         {
             return NotFound("O Id informado não existe");
@@ -40,7 +40,8 @@ public class ProductController : Controller
     [ServiceFilter(typeof(ApiLoggingFilter))]
     public ActionResult Post(Product product)
     {
-        var createdProduct = repository.Create(product);
+        var createdProduct = repository.ProductRepository.Create(product);
+        repository.Commit();
         return CreatedAtAction(nameof(Get), new { id = createdProduct.ProductId }, createdProduct);
     }
 
@@ -53,20 +54,24 @@ public class ProductController : Controller
         {
             return BadRequest(); //400
         }
-        return Ok(repository.Update(product));
+
+        repository.ProductRepository.Update(product);
+        repository.Commit();
+        return Ok(product);
     }
 
     [HttpDelete("{id:int}")]
     [ServiceFilter(typeof(ApiLoggingFilter))]
     public ActionResult Delete(int id)
     {
-        var product = repository.GetById(id);
+        var product = repository.ProductRepository.GetById(id);
         if (product is null)
         {
             return NotFound("Produto não localizado");
         }
 
-        repository.Delete(product);
+        repository.ProductRepository.Delete(product);
+        repository.Commit();
         return NoContent();
     }
 }
